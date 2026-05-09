@@ -1,0 +1,19 @@
+#include <Wire.h>
+void setup() {
+  Wire.begin();
+  Serial.begin(9600);
+  Serial.println("PILIH SENSOR ");
+  Serial.println("1 = Ultrasonik");
+  Serial.println("2 = PIR");
+}
+void loop() {
+  if (Serial.available()) {
+    char pilih = Serial.read();
+    Wire.beginTransmission(8);
+    Wire.write(pilih);
+    Wire.endTransmission();
+    Serial.print("Pilihan dikirim: ");
+    Serial.println(pilih);
+    delay(500);
+  }
+}
