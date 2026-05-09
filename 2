@@ -1,0 +1,35 @@
+#include <Wire.h>
+void setup() {
+  Wire.begin(8);
+  Wire.onReceive(terimaData);
+  pinMode(9, OUTPUT);
+  pinMode(10, INPUT);
+  pinMode(7, INPUT);
+  Serial.begin(9600);
+}
+void loop() {}
+int bacaUltrasonik() {
+  digitalWrite(9, LOW);
+  delayMicroseconds(2);
+  digitalWrite(9, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(9, LOW);
+  return pulseIn(10, HIGH) * 0.034 / 2;
+}
+void terimaData(int x) {
+  char pilih = Wire.read();
+  if (pilih == '1') {
+    int jarak = bacaUltrasonik();
+    Serial.print("Jarak: ");
+    Serial.print(jarak);
+    Serial.println(" cm");
+  }
+  else if (pilih == '2') {
+    if (digitalRead(7)) {
+      Serial.println("Ada Gerakan");
+    }
+    else {
+      Serial.println("Tidak Ada Gerakan");
+    }
+  }
+}
